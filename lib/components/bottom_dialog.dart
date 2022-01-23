@@ -17,17 +17,22 @@ Future<T?> showNeumorphicBottomDialog<T>({
         Animation<double> secondaryAnimation) {
       return Column(
         children: [
-          const Spacer(),
-          SlideTransition(
-            position: Tween<Offset>(
-                begin: const Offset(0, 1), end: const Offset(0, 0))
-                .animate(animation),
-            child: Neumorphic(
-              // style: ThemeNeumorphicStyle.convexCard(),
-              padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 40),
-              child: builder(context),
-            ),
-          )
+          const Spacer(
+            flex: 3,
+          ),
+          Expanded(
+              flex: 1,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                        begin: const Offset(0, 1), end: const Offset(0, 0))
+                    .animate(animation),
+                child: Neumorphic(
+                  // style: ThemeNeumorphicStyle.convexCard(),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
+                  child: builder(context),
+                ),
+              ))
         ],
       );
     },

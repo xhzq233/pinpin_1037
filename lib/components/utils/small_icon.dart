@@ -20,10 +20,7 @@ littleIconActions(
           //不知道为什么icon会往左偏一点，所以我把它矫正过来
           style: NeumorphicStyle(
               boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(4))),
-          onPressed: onPressed ??
-              () {
-                Get.back();
-              },
+          onPressed: onPressed ?? () => Get.back(),
           child: Icon(icons),
         );
       },

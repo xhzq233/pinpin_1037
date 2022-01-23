@@ -57,6 +57,24 @@ class ThemeStyle {
     ),
   );
 
+  ///导航
+  static const headline1 =
+      TextStyle(fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: -1.5);
+
+  ///标题
+  static const headline2 =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: -0.5);
+
+  ///body
+  static const bodyText1 = TextStyle(
+      fontSize: 14, fontWeight: FontWeight.normal, letterSpacing: 0.5);
+
+  ///footnote
+  static const caption = TextStyle(
+      fontSize: 12, fontWeight: FontWeight.normal, letterSpacing: 0.4);
+
+  ///color
+
   static const backgroundColor = background;
   static const iconColor = Color(0xff6B92E5);
   static const publishedTimeColor = Color(0xff808084);
@@ -100,5 +118,4 @@ class ThemeStyle {
   static const publishPinpinColor = Color(0xff6B92E5);
 
   static const dateTimePickerColor = Color(0xff6B92E5); //6B92E5
-
 }

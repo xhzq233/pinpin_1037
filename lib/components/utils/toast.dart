@@ -7,8 +7,8 @@ OverlayState? toastKey;
 
 bool _waringLock = false;
 
-neumorphicToast(String? str, {int delay = 3}) async {
-  if (_waringLock || str == null || toastKey == null) return;
+neumorphicToast(String str, {int delay = 3}) async {
+  if (_waringLock || str.isEmpty || toastKey == null) return;
 
   _waringLock = true;
 

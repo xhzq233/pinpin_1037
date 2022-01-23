@@ -65,17 +65,14 @@ class WelcomePage extends StatelessWidget {
                                     const EdgeInsets.symmetric(vertical: 4),
                                 child: Text(
                                   I18n.join.tr,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline2
-                                      ?.copyWith(color: Colors.white),
+                                  style: ThemeStyle.headline2
+                                      .copyWith(color: Colors.white),
                                 ),
                               ),
                             )),
                         NeumorphicButton(
                             // style: ,
                             onPressed: () {
-                              Get.back();
                               Get.offAllNamed(Routes.home);
                             },
                             child: Center(
@@ -84,10 +81,8 @@ class WelcomePage extends StatelessWidget {
                                     const EdgeInsets.symmetric(vertical: 4),
                                 child: Text(
                                   I18n.takeALook.tr,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline2
-                                      ?.copyWith(color: ThemeStyle.blue1),
+                                  style: ThemeStyle.headline2
+                                      .copyWith(color: ThemeStyle.blue1),
                                 ),
                               ),
                             )),

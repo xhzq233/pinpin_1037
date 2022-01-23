@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinpin_1037/i18n/i18n.dart';
+import 'package:pinpin_1037/models/global/account_mange.dart';
 import 'package:pinpin_1037/routes/routes.dart';
 
 class RouteAuthMiddleware extends GetMiddleware {
@@ -11,8 +12,11 @@ class RouteAuthMiddleware extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    Future.delayed(const Duration(seconds: 1),
-        () => Get.snackbar(I18n.notice.tr, "请先登录APP"));
-    return const RouteSettings(name: Routes.signIn);
+    if (AccountManager.isLogin) {
+      return null;
+    }
+    Get.snackbar(I18n.notice.tr, "请先登录APP");
+
+    return const RouteSettings(name: Routes.welcome + Routes.signIn);
   }
 }

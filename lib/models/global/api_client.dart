@@ -12,7 +12,6 @@ import 'package:pinpin_1037/models/pin_pin_reply/pin_pin_reply.dart';
 
 import 'api.dart';
 
-
 class ApiClient {
   static final Dio _dio = createDio();
   static const _jsonData = 'msg';
@@ -36,6 +35,7 @@ class ApiClient {
       // 这样请求将被中止并触发异常，上层catchError会被调用。
     }, onResponse: (response, handler) {
       log('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
+      log(response.data.toString());
       // Do something with response data
       return handler.next(response); // continue
       // 如果你想终止请求并触发一个错误,你可以 reject 一个`DioError`对象,如`handler.reject(error)`，
@@ -55,7 +55,7 @@ class ApiClient {
     String url, {
     required CancelToken cancelToken,
   }) async {
-    final response = await _dio.get(
+    final response = await _dio.get<String>(
       url,
       cancelToken: cancelToken,
     );
@@ -72,11 +72,11 @@ class ApiClient {
   ///[Api.getPinPinData]
   ///[Api.getPersonalPinPin]
   ///[Api.getFollows]
-  Future<PinPinDataSource> getPinPinDataSource({
+  static Future<PinPinDataSource> getPinPinDataSource({
     String target = Api.getPinPinData,
     required CancelToken cancelToken,
   }) async {
-    final response = await _dio.get(
+    final response = await _dio.get<String>(
       target,
       cancelToken: cancelToken,
     );
@@ -85,22 +85,43 @@ class ApiClient {
     return data;
   }
 
+  ///获取PinPinDataSource
+  ///可选择target 有：
+  ///[Api.getPinPinData]
+  ///[Api.getPersonalPinPin]
+  ///[Api.getFollows]
+  static Future<List<PinPinDataSource>> getPinPinDataSourceList({
+    String target = Api.getPinPinData,
+    required CancelToken cancelToken,
+  }) async {
+    final response = await _dio.get<String>(
+      target,
+      cancelToken: cancelToken,
+    );
+    final data = <PinPinDataSource>[];
+
+    for (dynamic i in jsonDecode(response.data!)[_jsonData]) {
+      data.add(PinPinDataSource.fromJson(i));
+    }
+    return data;
+  }
+
   ///发布拼拼
-  Future<void> postPinPinDataSource({
+  static Future<void> postPinPinDataSource({
     required PinPinDataSource value,
   }) async {
     await _dio.post(Api.createPinPin, data: jsonEncode(value.toJson()));
   }
 
   ///更新拼拼
-  Future<void> updatePinPinDataSource({
+  static Future<void> updatePinPinDataSource({
     required PinPinDataSource newValue,
   }) async {
     await _dio.put(Api.updatePinPin, data: jsonEncode(newValue.toJson()));
   }
 
   ///更新拼拼人数
-  Future<void> updatePinPinDemandingNumber({
+  static Future<void> updatePinPinDemandingNumber({
     required int newNow,
     required int newDemand,
     required int id,
@@ -116,7 +137,7 @@ class ApiClient {
   }
 
   ///删除拼拼
-  Future<void> deletePinPin({
+  static Future<void> deletePinPin({
     required int id,
   }) async {
     await _dio.delete(Api.deletePinPin,
@@ -132,7 +153,7 @@ class ApiClient {
 
   ///获取个人联系方式
   static Future<PersonContact> getPersonContact() async {
-    final response = await _dio.get(
+    final response = await _dio.get<String>(
       Api.getPersonalContact,
     );
     final data = PersonContact.fromJson(jsonDecode(response.data!)[_jsonData]);
@@ -151,7 +172,7 @@ class ApiClient {
 
   ///获取个人经历
   static Future<PersonExperience> getPersonExp() async {
-    final response = await _dio.get(
+    final response = await _dio.get<String>(
       Api.getPersonalInformation,
     );
     final data =
@@ -174,7 +195,7 @@ class ApiClient {
     required int id,
     required CancelToken cancelToken,
   }) async {
-    final response = await _dio.get(
+    final response = await _dio.get<String>(
       Api.getReply,
       queryParameters: {'PinpinId': id},
       cancelToken: cancelToken,

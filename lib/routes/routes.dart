@@ -26,10 +26,6 @@ import 'package:pinpin_1037/pages/sign/sign_up/verify_email/view.dart';
 import 'package:pinpin_1037/pages/welcome/welcome_page.dart';
 import 'package:pinpin_1037/routes/route_auth_middleware.dart';
 
-//监听路由堆栈的变化
-// RouteObserver<ModalRoute<void>> routeObserver =
-//     RouteObserver<ModalRoute<void>>();
-
 class Routes {
   ///主页
   static const home = "/home";
@@ -56,33 +52,39 @@ class Routes {
   static final routes = [
     GetPage(
         name: home,
-        page: () => HomePage(),
+        page: () => const HomePage(),
         binding: HomeBinding(),
-        middlewares: [
-          RouteAuthMiddleware(priority: 1)
-        ],
         children: [
           GetPage(
-              name: postPinPin,
-              page: () => PostPinPinPage(),
-              binding: PostPinPinBinding()),
+            name: postPinPin,
+            page: () => PostPinPinPage(),
+            binding: PostPinPinBinding(),
+            middlewares: [RouteAuthMiddleware(priority: 1)],
+          ),
           GetPage(
-              name: notice, page: () => NoticePage(), binding: NoticeBinding()),
+              name: notice,
+              page: () => NoticePage(),
+              middlewares: [RouteAuthMiddleware(priority: 1)],
+              binding: NoticeBinding()),
           GetPage(
               name: experience,
               page: () => ExperiencePage(),
+              middlewares: [RouteAuthMiddleware(priority: 1)],
               binding: ExperienceBinding()),
           GetPage(
               name: contact,
               page: () => ContactPage(),
+              middlewares: [RouteAuthMiddleware(priority: 1)],
               binding: ContactBinding()),
           GetPage(
               name: collections,
               page: () => CollectionsPage(),
+              middlewares: [RouteAuthMiddleware(priority: 1)],
               binding: CollectionsBinding()),
           GetPage(
               name: settings,
               page: () => SettingsPage(),
+              middlewares: [RouteAuthMiddleware(priority: 1)],
               binding: SettingsBinding()),
         ]),
     GetPage(name: welcome, page: () => const WelcomePage(), children: [

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:pinpin_1037/components/utils/toast.dart';
+import 'package:pinpin_1037/models/account/account.dart';
 import 'package:pinpin_1037/models/person_contact/person_contact.dart';
 import 'package:pinpin_1037/models/person_experience/person_experience.dart';
 import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
@@ -250,5 +251,56 @@ class ApiClient {
       {required int id, required String content}) async {
     await _dio.post(Api.reportPinPin,
         queryParameters: {'PinpinId': id, 'Content': content});
+  }
+
+  ///创建用户
+  static Future<void> createAccount({
+    required String name,
+    required String email,
+    required String passwd,
+    required int img,
+  }) async {
+    await _dio.post(Api.createUser, queryParameters: {
+      'Email': email,
+      'Username': name,
+      'Password': passwd,
+      'Image': img
+    });
+  }
+
+  ///发送验证码
+  static Future<void> sendCode({
+    required String email,
+    bool reset = false,
+  }) async {
+    await _dio.post(Api.sendVerifyCode, queryParameters: {
+      'Email': email,
+      'IsResetPassword': reset,
+    });
+  }
+
+  ///验证验证码
+  static Future<void> activateCode({required String code}) async {
+    await _dio.post(Api.activateEmail, queryParameters: {'VerifyCode': code});
+  }
+
+  ///创建用户
+  static Future<Account> login({
+    required String email,
+    required String passwd,
+  }) async {
+    final res = await _dio.post<String>(Api.createUser, queryParameters: {
+      'Email': email,
+      'Password': passwd,
+    });
+    final json = jsonDecode(res.data!);
+    return Account(
+        user: json['username'],
+        token: json['token'],
+        theme: json['image'],
+        cache: '',
+        locale: '',
+        //TODO:local
+        email: email);
   }
 }

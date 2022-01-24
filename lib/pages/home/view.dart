@@ -4,6 +4,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 import 'package:pinpin_1037/components/snap_card.dart';
+import 'package:pinpin_1037/components/toggle_element.dart';
 import 'package:pinpin_1037/components/utils/small_icon.dart';
 import 'package:pinpin_1037/models/global/theme.dart';
 import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
@@ -16,21 +17,6 @@ import 'logic.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  ToggleElement _toggleElement({
-    required String str,
-  }) =>
-      ToggleElement(
-        background: Center(
-            child: Text(
-          str,
-          style: ThemeStyle.bodyText1,
-        )),
-        foreground: Center(
-            child: Text(
-          str,
-          style: ThemeStyle.bodyText1.copyWith(fontWeight: FontWeight.bold),
-        )),
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +110,8 @@ class HomePage extends StatelessWidget {
                       NeumorphicToggle(
                         selectedIndex: datalogic.currentTab ? 0 : 1,
                         children: [
-                          _toggleElement(str: "全部"), //tab 为 0
-                          _toggleElement(str: "只看我的"),
+                          toggleElement(str: "全部"), //tab 为 0
+                          toggleElement(str: "只看我的"),
                         ],
                         thumb: Neumorphic(),
                         onChanged: (value) =>

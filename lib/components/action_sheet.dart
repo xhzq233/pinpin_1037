@@ -5,11 +5,18 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:pinpin_1037/models/global/theme.dart';
 
 Widget actionSheet(
-    {required List<String> names, required List<void Function()> actions}) {
+    {String? title,
+    required List<String> names,
+    required List<void Function()> actions}) {
   assert(names.length == actions.length);
   assert(names.isNotEmpty);
 
   return Column(children: [
+    if (title != null)
+      Text(
+        title,
+        style: ThemeStyle.headline2,
+      ),
     for (int i = 0; i < names.length; i++)
       Card(
         child: ListTile(

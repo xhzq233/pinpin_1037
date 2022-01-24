@@ -81,7 +81,7 @@ class NeumorphicTextFieldComponent extends StatelessWidget {
                       suffixText: suffixText,
                       border: InputBorder.none,
                       hintText: hint,
-                      // hintStyle: ThemeStyle.bodyText1,
+                      hintStyle: ThemeStyle.bodyText1,
                     ),
                   ),
                 ),

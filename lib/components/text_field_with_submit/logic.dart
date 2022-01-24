@@ -4,15 +4,17 @@ import 'package:pinpin_1037/utils/validators.dart';
 class TextFieldWithSubmitLogic extends GetxController {
   final List<Validator> validators;
 
-  late final List<bool> progress;
-  late final List<String> data;
+  late final List<bool> progress = [
+    for (int i = 0; i < validators.length; i++) false
+  ];
+
+  late final List<String> data = [
+    for (int i = 0; i < validators.length; i++) ''
+  ];
 
   TextFieldWithSubmitLogic({
     required this.validators,
-  }) {
-    progress = [for (int i = 0; i < validators.length; i++) false];
-    data = [for (int i = 0; i < validators.length; i++) ''];
-  }
+  });
 
   void submit() {
     Get.back();

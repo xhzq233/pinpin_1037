@@ -80,10 +80,9 @@ class Validators {
     return '';
   }
 
-  static bool isInt(String? s) {
-    if (s == null) {
-      return false;
-    }
-    return int.tryParse(s) != null;
-  }
+  static bool isInt(String s) => int.tryParse(s) != null;
+
+  static String isNum(String s) => isInt(s) ? '' : '请输入数字';
+
+  static String noMatter(String _) => '';
 }

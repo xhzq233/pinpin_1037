@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:pinpin_1037/components/action_sheet.dart';
-import 'package:pinpin_1037/components/bottom_dialog.dart';
+import 'package:pinpin_1037/components/show_dialog.dart';
 import 'package:pinpin_1037/components/utils/small_icon.dart';
 import 'package:pinpin_1037/components/utils/toast.dart';
 import 'package:pinpin_1037/models/global/theme.dart';

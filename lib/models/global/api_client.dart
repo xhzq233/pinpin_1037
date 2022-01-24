@@ -107,9 +107,9 @@ class ApiClient {
   }
 
   ///发布拼拼
-  static Future<void> postPinPinDataSource({
-    required PinPinDataSource value,
-  }) async {
+  static Future<void> postPinPinDataSource(
+    PinPinDataSource value,
+  ) async {
     await _dio.post(Api.createPinPin, data: jsonEncode(value.toJson()));
   }
 

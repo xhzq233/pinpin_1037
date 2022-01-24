@@ -27,7 +27,7 @@ class CustomDialogComponent<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO
+    //TODO 看看put
 
     return GetBuilder<CustomDialogLogic>(builder: (logic) {
       switch (logic.state) {

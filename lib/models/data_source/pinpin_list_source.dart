@@ -5,8 +5,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:loading_more_list/loading_more_list.dart';
-import 'package:pinpin_1037/models/global/api.dart';
-import 'package:pinpin_1037/models/global/api_client.dart';
+import 'package:pinpin_1037/global/api.dart';
+import 'package:pinpin_1037/global/api_client.dart';
 import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
 
 enum DataType {
@@ -58,12 +58,10 @@ class PinPinListSource extends LoadingMoreBase<PinPinDataSource> {
     try {
       final source = await ApiClient.getPinPinDataSourceList(
           target: api, cancelToken: cancelToken);
-
-      if (hasMore) addAll(source);
-
       if (pageindex++ == 1) {
         clear();
       }
+      if (hasMore) addAll(source);
 
       isSuccess = true;
     } catch (exception, stack) {

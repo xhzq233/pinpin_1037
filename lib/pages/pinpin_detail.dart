@@ -7,9 +7,10 @@ import 'package:pinpin_1037/components/action_sheet.dart';
 import 'package:pinpin_1037/components/show_dialog.dart';
 import 'package:pinpin_1037/components/utils/small_icon.dart';
 import 'package:pinpin_1037/components/utils/toast.dart';
-import 'package:pinpin_1037/models/global/theme.dart';
+import 'package:pinpin_1037/global/theme.dart';
 import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
-import 'package:pinpin_1037/pages/report.dart';
+import 'package:pinpin_1037/pages/report/logic.dart';
+import 'package:pinpin_1037/pages/report/view.dart';
 
 class PinPinDetail extends StatelessWidget {
   final PinPinDataSource datasource;
@@ -54,6 +55,7 @@ class PinPinDetail extends StatelessWidget {
                   ]),
                 );
                 if (res == true) {
+                  Get.lazyPut(() => ReportLogic());
                   Get.to(ReportPage(id: datasource.pinpinId!));
                 }
               })
@@ -183,7 +185,7 @@ class PinPinDetail extends StatelessWidget {
                                       (datasource.contactTel ?? '') +
                                       ' ' +
                                       (datasource.contactWechat ?? '')));
-                              neumorphicToast("复制成功");
+                              toast("复制成功");
                             },
                             child: Text(datasource.getContactDetailResume(),
                                 style: const TextStyle(
@@ -261,7 +263,6 @@ class PinPinDetail extends StatelessWidget {
                       NeumorphicBoxShape.roundRect(BorderRadius.circular(20))),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-// mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _button(
                       img: 'assets/icon/bookmark_fill.png',

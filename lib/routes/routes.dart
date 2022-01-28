@@ -19,8 +19,6 @@ import 'package:pinpin_1037/pages/sign/sign_up/set_avatar/binding.dart';
 import 'package:pinpin_1037/pages/sign/sign_up/set_avatar/view.dart';
 import 'package:pinpin_1037/pages/sign/sign_up/set_nick/binding.dart';
 import 'package:pinpin_1037/pages/sign/sign_up/set_nick/view.dart';
-import 'package:pinpin_1037/pages/sign/sign_up/set_passwd/binding.dart';
-import 'package:pinpin_1037/pages/sign/sign_up/set_passwd/view.dart';
 import 'package:pinpin_1037/pages/sign/sign_up/verify_email/binding.dart';
 import 'package:pinpin_1037/pages/sign/sign_up/verify_email/view.dart';
 import 'package:pinpin_1037/pages/welcome/welcome_page.dart';
@@ -33,11 +31,10 @@ class Routes {
 
   ///登陆
   static const welcome = "/welcome";
-  static const signUp = "/sign_up"; //验证邮箱VerifyEmail
+  static const signUp = "/sign_up"; //alias 验证邮箱VerifyEmail
   static const signIn = "/sign_in";
   static const avatar = "/avatar";
-  static const nick = "/nick";
-  static const passwd = "/passwd";
+  static const nickAndPasswd = "/nick_passwd";
 
   ///抽屉 drawer
   static const notice = "/notice";
@@ -57,7 +54,7 @@ class Routes {
         children: [
           GetPage(
             name: postPinPin,
-            page: () => PostPinPinPage(),
+            page: () => const PostPinPinPage(),
             binding: PostPinPinBinding(),
             middlewares: [RouteAuthMiddleware(priority: 1)],
           ),
@@ -78,7 +75,7 @@ class Routes {
               binding: ContactBinding()),
           GetPage(
               name: collections,
-              page: () => CollectionsPage(),
+              page: () => const CollectionsPage(),
               middlewares: [RouteAuthMiddleware(priority: 1)],
               binding: CollectionsBinding()),
           GetPage(
@@ -88,27 +85,24 @@ class Routes {
               binding: SettingsBinding()),
         ]),
     GetPage(name: welcome, page: () => const WelcomePage(), children: [
-      GetPage(name: signIn, page: () => SignInPage(), binding: SignInBinding()),
+      GetPage(
+          name: signIn,
+          page: () => const SignInPage(),
+          binding: SignInBinding()),
       GetPage(
           name: signUp,
-          page: () => VerifyEmailPage(),
+          page: () => const VerifyEmailPage(),
           binding: VerifyEmailBinding(),
           children: [
             GetPage(
-                name: passwd,
-                page: () => SetPasswdPage(),
-                binding: SetPasswdBinding(),
+                name: nickAndPasswd,
+                page: () => const SetNickPage(),
+                binding: SetNickBinding(),
                 children: [
                   GetPage(
-                      name: nick,
-                      page: () => SetNickPage(),
-                      binding: SetNickBinding(),
-                      children: [
-                        GetPage(
-                            name: avatar,
-                            binding: SetAvatarBinding(),
-                            page: () => SetAvatarPage()),
-                      ]),
+                      name: avatar,
+                      binding: SetAvatarBinding(),
+                      page: () => const SetAvatarPage()),
                 ]),
           ]),
     ]),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pinpin_1037/models/global/theme.dart';
+import 'package:pinpin_1037/global/theme.dart';
+import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
 import 'logic.dart';
 
 ///应用场景例：
@@ -17,7 +18,7 @@ class CustomDialogComponent<T> extends StatelessWidget {
       required this.resultHint,
       required T data})
       : super(key: key) {
-    Get.put(CustomDialogLogic(future: future, data: data));
+    Get.put(CustomDialogLogic<T>(future: future, data: data));
   }
 
   final String leading;
@@ -27,70 +28,70 @@ class CustomDialogComponent<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO 看看put
-
-    return GetBuilder<CustomDialogLogic>(builder: (logic) {
-      switch (logic.state) {
-        case DialogState.waitingConfirm:
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                title,
-                style: ThemeStyle.headline2,
-              ),
-              Row(
+    return GetBuilder<CustomDialogLogic<T>>(
+        assignId: true,
+        builder: (logic) {
+          switch (logic.state) {
+            case DialogState.waitingConfirm:
+              return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      Get.back(result: false);
-                    },
-                    child: Text(
-                      leading,
-                      style: ThemeStyle.headline2,
-                    ),
+                  Text(
+                    title,
+                    style: ThemeStyle.headline2,
                   ),
-                  TextButton(
-                    onPressed: () async {
-                      logic.confirm();
-                    },
-                    child: Text(
-                      trailing,
-                      style: ThemeStyle.headline2,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Get.back(result: false);
+                        },
+                        child: Text(
+                          leading,
+                          style: ThemeStyle.headline2,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          logic.confirm();
+                        },
+                        child: Text(
+                          trailing,
+                          style: ThemeStyle.headline2,
+                        ),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
-          );
-        case DialogState.complete:
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Stack(alignment: Alignment.center, children: const [
-                Center(
-                  child: SizedBox(
-                    height: 66,
-                    width: 66,
-                    child: CircularProgressIndicator(
-                      value: 1,
-                      color: ThemeStyle.iconColor,
+              );
+            case DialogState.complete:
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Stack(alignment: Alignment.center, children: const [
+                    Center(
+                      child: SizedBox(
+                        height: 66,
+                        width: 66,
+                        child: CircularProgressIndicator(
+                          value: 1,
+                          color: ThemeStyle.iconColor,
+                        ),
+                      ),
                     ),
-                  ),
+                    Icon(Icons.done, color: ThemeStyle.iconColor, size: 54)
+                  ]),
+                  Text(resultHint, style: ThemeStyle.headline2)
+                ],
+              );
+            case DialogState.waitingFuture:
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: ThemeStyle.iconColor,
                 ),
-                Icon(Icons.done, color: ThemeStyle.iconColor, size: 54)
-              ]),
-              Text(resultHint, style: ThemeStyle.headline2)
-            ],
-          );
-        case DialogState.waitingFuture:
-          return const Center(
-            child: CircularProgressIndicator(
-              color: ThemeStyle.iconColor,
-            ),
-          );
-      }
-    });
+              );
+          }
+        });
   }
 }

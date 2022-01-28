@@ -1,5 +1,10 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pinpin_1037/models/data_source/pinpin_list_source.dart';
+
+import 'package:pinpin_1037/global/api.dart';
+import 'package:pinpin_1037/global/api_client.dart';
+import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
 
 class HomeLogic extends GetxController {
   bool isShowFilterBar = false;
@@ -14,16 +19,16 @@ class HomeLogic extends GetxController {
 class HomeDataLogic extends GetxController {
   static const all = true;
   static const onlyMe = false;
-
+  final controller = PageController();
   bool currentTab = all;
 
-  ///这里的data被使用完后会不会被释放?TODO
-  PinPinListSource get data => PinPinListSource(
-      dataType:
-          currentTab == all ? DataType.totalPinPin : DataType.personalPinPin);
+  Future<List<PinPinDataSource>> get data async =>
+      await ApiClient.getPinPinDataSourceList(
+          target: currentTab ? Api.getPinPinData : Api.getPersonalPinPin,
+          cancelToken: CancelToken());
 
   void changeCurrentTab(bool c) {
     currentTab = c;
-    update();
+    controller.jumpToPage(c ? 0 : 1);
   }
 }

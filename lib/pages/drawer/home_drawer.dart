@@ -4,8 +4,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:pinpin_1037/components/action_sheet.dart';
 import 'package:pinpin_1037/components/show_dialog.dart';
-import 'package:pinpin_1037/models/global/account_mange.dart';
-import 'package:pinpin_1037/models/global/theme.dart';
+import 'package:pinpin_1037/global/account_mange.dart';
+import 'package:pinpin_1037/global/theme.dart';
+import 'package:pinpin_1037/pages/sign/sign_up/set_avatar/binding.dart';
+import 'package:pinpin_1037/pages/sign/sign_up/set_avatar/view.dart';
 import 'package:pinpin_1037/routes/routes.dart';
 
 class HomeDrawerPage extends StatelessWidget {
@@ -39,7 +41,7 @@ class HomeDrawerPage extends StatelessWidget {
                   child: !AccountManager.isLogin
                       ? GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamed("signIn");
+                            Get.toNamed(Routes.welcome + Routes.signIn);
                           },
                           child: const Center(
                             child: Text(
@@ -66,8 +68,10 @@ class HomeDrawerPage extends StatelessWidget {
 
                                 if (res == true) {
                                   //TODO
-                                  final r = await Navigator.of(context)
-                                      .pushNamed("avatar");
+                                  final r = await Get.to(
+                                    const SetAvatarPage.reset(),
+                                    binding: SetAvatarBinding(),
+                                  );
                                   if (r == true) {
                                     (context as Element).markNeedsBuild();
                                   }
@@ -114,18 +118,20 @@ class HomeDrawerPage extends StatelessWidget {
                     // itemExtent: 80,
                     children: [
                       _component('消息通知', onTap: () {
-                        Get.offNamed(Routes.home + Routes.notice);
+                        Get.toNamed(Routes.home + Routes.notice);
                       }),
                       _component('联系方式', onTap: () {
-                        Get.offNamed(Routes.home + Routes.contact);
+                        Get.toNamed(Routes.home + Routes.contact);
                       }),
                       _component('个人经历', onTap: () {
-                        Get.offNamed(Routes.home + Routes.experience);
+                        Get.toNamed(Routes.home + Routes.experience);
                       }),
                       _component('我的收藏', onTap: () {
-                        Get.offNamed(Routes.home + Routes.collections);
+                        Get.toNamed(Routes.home + Routes.collections);
                       }),
-                      _component('设置', onTap: () {}),
+                      _component('设置', onTap: () {
+                        Get.toNamed(Routes.home + Routes.settings);
+                      }),
                     ],
                   ),
                 ),
@@ -145,8 +151,7 @@ class HomeDrawerPage extends StatelessWidget {
                                   () => Get.back(result: false),
                                 ]));
                         if (res == true) {
-                          // await Global.signOut();
-                          Get.back();
+                          AccountManager.removeAccount();
                           Get.offAllNamed(Routes.welcome);
                         }
                       },

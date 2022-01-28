@@ -6,6 +6,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 Future<T?> showNeumorphicBottomDialog<T>({
   required BuildContext context,
   bool barrierDismissible = true,
+  double heightFactor = 0.25,
   required WidgetBuilder builder,
 }) {
   return showGeneralDialog<T>(
@@ -25,10 +26,9 @@ Future<T?> showNeumorphicBottomDialog<T>({
         ],
       );
     },
+    transitionDuration: const Duration(milliseconds: 300),
     transitionBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(0.0, 1.0);
-      const end = Offset.zero;
-      final tween = Tween(begin: begin, end: end);
+      final tween = Tween(begin: Offset(0.0, heightFactor), end: Offset.zero);
       final offsetAnimation = animation.drive(tween);
 
       return SlideTransition(

@@ -46,13 +46,13 @@ flutter:
     - assets/welcome/4.png
     - assets/welcome/5.png
     - assets/welcome/6.png
-#    - assets/icon/bookmark.png
-#    - assets/icon/bookmark_fill.png
-#    - assets/icon/thumb_up_fill.png
-#    - assets/icon/thumb_up.png
-#    - assets/icon/remarks_fill.png
-#    - assets/icon/forward_fill.png
-#    - assets/temp.png
+    - assets/icon/bookmark.png
+    - assets/icon/bookmark_fill.png
+    - assets/icon/thumb_up_fill.png
+    - assets/icon/thumb_up.png
+    - assets/icon/remarks_fill.png
+    - assets/icon/forward_fill.png
+    - assets/temp.png
 
 flutter_native_splash:
 

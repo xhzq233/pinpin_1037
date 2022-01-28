@@ -1,4 +1,4 @@
-package xyz.xhzq.pinpin1037.pinpin_1037
+package xyz.xhzq.pinpin_1037
 
 import io.flutter.embedding.android.FlutterActivity
 

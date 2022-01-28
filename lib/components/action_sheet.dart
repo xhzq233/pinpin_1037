@@ -2,7 +2,7 @@
 /// Created by xhz on 2022/1/22
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:pinpin_1037/models/global/theme.dart';
+import 'package:pinpin_1037/global/theme.dart';
 
 Widget actionSheet(
     {String? title,

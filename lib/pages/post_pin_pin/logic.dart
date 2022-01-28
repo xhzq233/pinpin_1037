@@ -1,12 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
 import 'package:pinpin_1037/utils/validators.dart';
 
 class PostPinPinLogic extends GetxController {
   var showDate = false;
-
-  final List<Validator> validators = [];
 
   static const qqVali = Validators.qqNumber;
   static const vxVali = Validators.vxNumber;
@@ -18,19 +19,6 @@ class PostPinPinLogic extends GetxController {
   var tabIndex = 0;
   var selectedGender = 0;
 
-  // ///TODO:懒加载
-  // final contestNameController = TextEditingController();
-  // final num1Controller = TextEditingController();
-  // final num2Controller = TextEditingController();
-  // final leaderDepartmentController = TextEditingController();
-  // final infoDemandedController = TextEditingController();
-  // final qqController = TextEditingController();
-  // final vxController = TextEditingController();
-  // final telController = TextEditingController();
-  // final leaderNameController = TextEditingController();
-  // final teamMateInfoController = TextEditingController();
-  // final contestInfoController = TextEditingController();
-  // final leaderInfoController = TextEditingController();
   final progress1 = [false, false, false];
   final progress2 = [false, false];
 
@@ -67,6 +55,7 @@ class PostPinPinLogic extends GetxController {
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
       showDate = true;
+      progress1[2] = showDate;
       update();
     }
   }
@@ -110,20 +99,25 @@ class PostPinPinLogic extends GetxController {
   }
 
   void updateProgress1() {
-    progress1[0] = qqVali(qq).isEmpty ||
-        vxVali(vx).isEmpty ||
-        telVali(tel).isEmpty ||
-        qq.isNotEmpty ||
-        vx.isNotEmpty ||
-        tel.isNotEmpty;
+    progress1[0] = (qqVali(qq).isEmpty &&
+            vxVali(vx).isEmpty &&
+            telVali(tel).isEmpty) && //三者同时通过
+        (qq.isNotEmpty || vx.isNotEmpty || tel.isNotEmpty); //三者不能同时为空
 
     progress1[1] = contestName.isNotEmpty;
-    progress1[2] = showDate;
+    update();
   }
 
   void updateProgress2() {
     progress2[0] =
-        numVali(num1) || numVali(num2) || int.parse(num1) > int.parse(num2);
+        numVali(num1) && numVali(num2) && int.parse(num1) > int.parse(num2);
     progress2[1] = infoDemanded.isNotEmpty;
+    update();
+  }
+
+  @override
+  void onInit() {
+    log('$runtimeType init....');
+    super.onInit();
   }
 }

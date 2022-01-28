@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:pinpin_1037/components/utils/toast.dart';
 import 'package:pinpin_1037/models/account/account.dart';
+import 'package:pinpin_1037/global/account_mange.dart';
 import 'package:pinpin_1037/models/person_contact/person_contact.dart';
 import 'package:pinpin_1037/models/person_experience/person_experience.dart';
 import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
@@ -19,34 +20,47 @@ class ApiClient {
 
   static Dio createDio() {
     var dio = Dio(BaseOptions(
+      ///不添加其他的，response就是json
       baseUrl: Api.head,
-      receiveTimeout: 15000, // 15 seconds
+      receiveTimeout: 15000,
       connectTimeout: 15000,
       sendTimeout: 15000,
     ));
 
     dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+      if (AccountManager.isLogin) {
+        options.headers['Authorization'] =
+            'Bearer ' + AccountManager.account!.token;
+        log('Auto added token');
+      }
       log('REQUEST[${options.method}] => PATH: ${options.path}');
-      // Do something before request is sent
       return handler.next(options); //continue
-      // 如果你想完成请求并返回一些自定义数据，你可以resolve一个Response对象 `handler.resolve(response)`。
-      // 这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义response.
-      //
-      // 如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象,如`handler.reject(error)`，
-      // 这样请求将被中止并触发异常，上层catchError会被调用。
     }, onResponse: (response, handler) {
-      log('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
-      log(response.data.toString());
-      // Do something with response data
+      log('RESPONSE[${response.statusCode}] '); //=> DATA: ${response.data}
       return handler.next(response); // continue
-      // 如果你想终止请求并触发一个错误,你可以 reject 一个`DioError`对象,如`handler.reject(error)`，
-      // 这样请求将被中止并触发异常，上层catchError会被调用。
     }, onError: (DioError e, handler) {
-      neumorphicToast(e.message);
-      // Do something with response error
-      return handler.next(e); //continue
-      // 如果你想完成请求并返回一些自定义数据，可以resolve 一个`Response`,如`handler.resolve(response)`。
-      // 这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义response.
+      final String msg = e.response!.data['msg'];
+      final int statusCode = e.response!.statusCode!;
+      late final String text;
+      if (statusCode == 400) {
+        text = '参数错误/不足:$msg';
+      } else if (statusCode == 401) {
+        text = 'OAuth err:$msg';
+      } else if (statusCode == 404) {
+        text = '404 page not found';
+      } else if (statusCode == 500) {
+        text = '操作出错:$msg';
+      } else if (statusCode == 504) {
+        text = '无应答:$msg';
+      } else {
+        text = 'Unknown Exception:$msg';
+      }
+      toast(text);
+
+      ///遇到错误返回空
+      return handler.resolve(Response(
+          requestOptions: e.requestOptions,
+          data: FormData.fromMap({'msg': ''})));
     }));
 
     return dio;
@@ -56,14 +70,14 @@ class ApiClient {
     String url, {
     required CancelToken cancelToken,
   }) async {
-    final response = await _dio.get<String>(
+    final response = await _dio.get(
       url,
       cancelToken: cancelToken,
     );
 
     final responseData = response.data!;
     if (T == PinPinDataSource) {
-      return PinPinDataSource.fromJson(jsonDecode(responseData)) as T;
+      return PinPinDataSource.fromJson(responseData[_jsonData]) as T;
     }
     throw Exception('type cast err');
   }
@@ -77,12 +91,11 @@ class ApiClient {
     String target = Api.getPinPinData,
     required CancelToken cancelToken,
   }) async {
-    final response = await _dio.get<String>(
+    final response = await _dio.get(
       target,
       cancelToken: cancelToken,
     );
-    final data =
-        PinPinDataSource.fromJson(jsonDecode(response.data!)[_jsonData]);
+    final data = PinPinDataSource.fromJson(response.data![_jsonData]);
     return data;
   }
 
@@ -95,13 +108,13 @@ class ApiClient {
     String target = Api.getPinPinData,
     required CancelToken cancelToken,
   }) async {
-    final response = await _dio.get<String>(
+    final response = await _dio.get(
       target,
       cancelToken: cancelToken,
     );
     final data = <PinPinDataSource>[];
 
-    for (dynamic i in jsonDecode(response.data!)[_jsonData]) {
+    for (dynamic i in response.data![_jsonData]) {
       data.add(PinPinDataSource.fromJson(i));
     }
     return data;
@@ -154,10 +167,10 @@ class ApiClient {
 
   ///获取个人联系方式
   static Future<PersonContact> getPersonContact() async {
-    final response = await _dio.get<String>(
+    final response = await _dio.get(
       Api.getPersonalContact,
     );
-    final data = PersonContact.fromJson(jsonDecode(response.data!)[_jsonData]);
+    final data = PersonContact.fromJson(response.data!);
     return data;
   }
 
@@ -173,11 +186,10 @@ class ApiClient {
 
   ///获取个人经历
   static Future<PersonExperience> getPersonExp() async {
-    final response = await _dio.get<String>(
+    final response = await _dio.get(
       Api.getPersonalInformation,
     );
-    final data =
-        PersonExperience.fromJson(jsonDecode(response.data!)[_jsonData]);
+    final data = PersonExperience.fromJson(response.data![_jsonData]);
     return data;
   }
 
@@ -196,12 +208,12 @@ class ApiClient {
     required int id,
     required CancelToken cancelToken,
   }) async {
-    final response = await _dio.get<String>(
+    final response = await _dio.get(
       Api.getReply,
       queryParameters: {'PinpinId': id},
       cancelToken: cancelToken,
     );
-    final data = PinPinReply.fromJson(jsonDecode(response.data!)[_jsonData]);
+    final data = PinPinReply.fromJson(response.data![_jsonData]);
     return data;
   }
 
@@ -250,7 +262,7 @@ class ApiClient {
   static Future<void> reportPinPin(
       {required int id, required String content}) async {
     await _dio.post(Api.reportPinPin,
-        queryParameters: {'PinpinId': id, 'Content': content});
+        data: FormData.fromMap({'PinpinId': id, 'Content': content}));
   }
 
   ///创建用户
@@ -273,34 +285,37 @@ class ApiClient {
     required String email,
     bool reset = false,
   }) async {
-    await _dio.post(Api.sendVerifyCode, queryParameters: {
-      'Email': email,
-      'IsResetPassword': reset,
-    });
+    await _dio.post(Api.sendVerifyCode,
+        data: FormData.fromMap({
+          'Email': email,
+          'IsResetPassword': reset,
+        }));
   }
 
   ///验证验证码
   static Future<void> activateCode({required String code}) async {
-    await _dio.post(Api.activateEmail, queryParameters: {'VerifyCode': code});
+    await _dio.post(Api.activateEmail,
+        data: FormData.fromMap({'VerifyCode': code}));
   }
 
-  ///创建用户
+  ///登陆
   static Future<Account> login({
     required String email,
     required String passwd,
   }) async {
-    final res = await _dio.post<String>(Api.createUser, queryParameters: {
-      'Email': email,
-      'Password': passwd,
-    });
-    final json = jsonDecode(res.data!);
+    final res = await _dio.post(Api.signIn,
+        data: FormData.fromMap({
+          'Email': email,
+          'Password': passwd,
+        }));
+    final json = res.data!;
     return Account(
         user: json['username'],
         token: json['token'],
         theme: json['image'],
         cache: '',
         locale: '',
-        //TODO:local
+        //TODO:locale
         email: email);
   }
 }

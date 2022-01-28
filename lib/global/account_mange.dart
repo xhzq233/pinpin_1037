@@ -10,9 +10,6 @@ class AccountManager {
   static Account? account;
   static const _localSaveName = 'account';
 
-  static Map<String, String> get tokenHeader =>
-      {'Authorization': 'Bearer ' + account!.token};
-
   //初始化
   static Future<void> init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,13 +20,14 @@ class AccountManager {
   }
 
   static Future<void> saveAccount(Account profile) async {
+    account = profile;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_localSaveName, jsonEncode(profile.toJson()));
   }
 
   static Future<void> removeAccount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    account = null;
     prefs.remove(_localSaveName);
   }
 }

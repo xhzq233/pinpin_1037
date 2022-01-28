@@ -2,6 +2,7 @@
 /// Created by xhz on 2022/1/22
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:pinpin_1037/global/api_client.dart';
 import 'package:pinpin_1037/models/pin_pin_data_source/pin_pin_data_source.dart';
 import 'package:pinpin_1037/pages/pinpin_detail.dart';
 
@@ -14,6 +15,7 @@ class NeumorphicSnapButtonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NeumorphicButton(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       onPressed: () {
         Get.to(PinPinDetail(datasource: datasource));
@@ -51,11 +53,11 @@ class NeumorphicSnapButtonCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
+            GestureDetector(onTap:()=> ApiClient.bookmarkPinPin(id: datasource.pinpinId!),child: Image.asset(
               'assets/icon/bookmark.png',
               width: 25,
               height: 25,
-            ),
+            ),),
             Text(
               datasource.getPublishedTimeResume(),
               // style: ThemeFont.cardTime,

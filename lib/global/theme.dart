@@ -8,70 +8,60 @@ class ThemeStyle {
 
   ///真正的theme
   static final lightTheme = ThemeData.light().copyWith(
-      indicatorColor: const Color(0xffea638c),
-      toggleableActiveColor: const Color(0xffea638c),
+      indicatorColor: blue2,
+      toggleableActiveColor: blue2,
       backgroundColor: backgroundColor,
+      primaryColor: blue1,
       scaffoldBackgroundColor: backgroundColor,
       colorScheme: const ColorScheme(
-        primary: Color(0xffea638c),
-        primaryVariant: Color(0xffbc2f58),
-        secondary: Color(0xffde4f78),
-        secondaryVariant: Color(0xffea638c),
-        background: Colors.white,
-        surface: Colors.white,
-        error: Color(0xFFB00020),
-        onPrimary: Colors.white,
+        primary: blue2,
+        primaryVariant: blue1,
+        secondary: blue3,
+        secondaryVariant: blue2,
+        background: backgroundColor,
+        surface: backgroundColor,
+        error: warningColor,
+        onPrimary: Colors.black,
         onSecondary: Colors.black,
         onSurface: Colors.black,
         onBackground: Colors.black,
-        onError: Colors.white,
+        onError: backgroundColor,
         brightness: Brightness.light,
-      ),
-      textTheme: const TextTheme(
-        ///导航
-        headline1: TextStyle(
-            fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: -1.5),
-
-        ///标题
-        headline2: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: -0.5),
-
-        ///body
-        bodyText1: TextStyle(
-            fontSize: 14, fontWeight: FontWeight.normal, letterSpacing: 0.5),
-
-        ///footnote
-        caption: TextStyle(
-            fontSize: 12, fontWeight: FontWeight.normal, letterSpacing: 0.4),
-      ));
+      ),);
 
   ///虚假的theme（
   static final neumorphicLightTheme = NeumorphicThemeData(
-    baseColor: backgroundColor,
-    depth: 4,
-    buttonStyle: NeumorphicStyle(
-      shape: NeumorphicShape.flat,
+      baseColor: backgroundColor,
+      accentColor: blue2,
+      borderColor: captionColor,
+      variantColor: Colors.black,
+      defaultTextColor: blue3,
+      disabledColor: gray4,
       depth: 4,
-      // color: backgroundColor,
-      boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(10)),
-    ),
-  );
+      buttonStyle: NeumorphicStyle(
+        shape: NeumorphicShape.flat,
+        depth: 4,
+        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(10)),
+      ),
+      boxShape: NeumorphicBoxShape.roundRect(
+          const BorderRadius.all(Radius.circular(15))));
 
   ///导航
   static const headline1 =
-      TextStyle(fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: -1.5);
+      TextStyle(fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: -1.5,color: blue1);
 
   ///标题
   static const headline2 =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: -0.5);
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: -0.5,color: Colors.black);
 
   ///body
   static const bodyText1 = TextStyle(
-      fontSize: 14, fontWeight: FontWeight.normal, letterSpacing: 0.5);
+      fontSize: 14, fontWeight: FontWeight.normal, letterSpacing: 0.5,color: Colors.black);
 
   ///footnote
   static const caption = TextStyle(
-      fontSize: 12, fontWeight: FontWeight.normal, letterSpacing: 0.4);
+      fontSize: 12, fontWeight: FontWeight.normal, letterSpacing: 0.4,color: gray4);
+
 
   ///color
 

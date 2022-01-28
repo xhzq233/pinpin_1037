@@ -1,9 +1,12 @@
+
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:pinpin_1037/utils/validators.dart';
 
 class NeumorphicTextFieldLogic extends GetxController {
-  final TextEditingController controller = TextEditingController();
+  late final TextEditingController controller;
   final FocusNode node = FocusNode();
 
   String get wrongHint => validator(controller.text);
@@ -14,10 +17,12 @@ class NeumorphicTextFieldLogic extends GetxController {
 
   final Validator validator;
 
-  NeumorphicTextFieldLogic({required this.validator}) {
+  NeumorphicTextFieldLogic({required this.validator, String? initData}) {
+    controller = TextEditingController(text: initData);
     node.addListener(() {
       if (!node.hasFocus) {
         //当键盘消失时，再rebuild一遍
+        log('this is when hasnt focus rebuild');
         update();
       }
     });
@@ -30,3 +35,4 @@ class NeumorphicTextFieldLogic extends GetxController {
     super.dispose();
   }
 }
+

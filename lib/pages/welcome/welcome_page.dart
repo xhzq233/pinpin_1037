@@ -5,7 +5,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 import 'package:pinpin_1037/components/utils/page_padding_wrapper.dart';
 import 'package:pinpin_1037/i18n/i18n.dart';
-import 'package:pinpin_1037/models/global/theme.dart';
+import 'package:pinpin_1037/global/theme.dart';
 import 'package:pinpin_1037/routes/routes.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -54,7 +54,7 @@ class WelcomePage extends StatelessWidget {
                         ?.buttonStyle
                         ?.copyWith(color: ThemeStyle.blue1),
                     onPressed: () {
-                      Get.toNamed(Routes.welcome + Routes.signUp);
+                      Get.toNamed(Routes.welcome + Routes.signIn);
                     },
                     child: Center(
                       child: Padding(

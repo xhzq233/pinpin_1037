@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+
 enum DialogState { waitingConfirm, waitingFuture, complete }
 
 class CustomDialogLogic<T> extends GetxController {
@@ -17,7 +18,7 @@ class CustomDialogLogic<T> extends GetxController {
     state = DialogState.complete;
     update();
     Future.delayed(const Duration(seconds: 1, milliseconds: 500)).then((_) {
-      Get.back();
+      Get.back(result: true);
     });
   }
 }

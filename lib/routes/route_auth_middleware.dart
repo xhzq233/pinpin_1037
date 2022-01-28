@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinpin_1037/i18n/i18n.dart';
-import 'package:pinpin_1037/models/global/account_mange.dart';
+import 'package:pinpin_1037/global/account_mange.dart';
 import 'package:pinpin_1037/routes/routes.dart';
 
 class RouteAuthMiddleware extends GetMiddleware {

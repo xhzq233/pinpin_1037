@@ -17,7 +17,8 @@ class VerifyEmailLogic extends GetxController {
   Future<bool> sendCode() async {
     if (Validators.schoolNumber(email).isEmpty) {
       Get.context?.loaderOverlay.show();
-      await ApiClient.sendCode(email: email);
+      await Future.delayed(const Duration(seconds: 1));
+      // await ApiClient.sendCode(email: email);
       toast('已发送验证码，注意查收');
       Get.context?.loaderOverlay.hide();
       return true;

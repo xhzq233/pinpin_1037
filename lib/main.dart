@@ -1,16 +1,12 @@
 /// pinpin_1037 - main
 /// Created by xhz on 2022/1/15.
 
-import 'dart:developer';
-
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 import 'package:pinpin_1037/global/account_mange.dart';
 import 'package:pinpin_1037/routes/routes.dart';
-import 'package:pinpin_1037/utils/validators.dart';
-import 'components/neumorphic_text_field/view.dart';
 import 'i18n/i18n.dart';
 import 'i18n/i18n_translations.dart';
 import 'global/theme.dart';

@@ -55,12 +55,14 @@ class ApiClient {
       } else {
         text = 'Unknown Exception:$msg';
       }
+      log(text);
       toast(text);
 
-      ///遇到错误返回空
+      ///遇到错误
+      // return handler.reject(e);
       return handler.resolve(Response(
           requestOptions: e.requestOptions,
-          data: FormData.fromMap({'msg': ''})));
+          data: {'msg': ''}));
     }));
 
     return dio;
@@ -112,8 +114,8 @@ class ApiClient {
       target,
       cancelToken: cancelToken,
     );
+    log(response.data.runtimeType.toString());
     final data = <PinPinDataSource>[];
-
     for (dynamic i in response.data![_jsonData]) {
       data.add(PinPinDataSource.fromJson(i));
     }

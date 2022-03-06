@@ -16,8 +16,8 @@ enum DataType {
 }
 
 class PinPinListSource extends LoadingMoreBase<PinPinDataSource> {
-  int pageindex = 1;
-  bool _hasMore = true;
+  bool firstInit = true; //第一次加载数据
+
   bool forceRefresh = false;
   CancelToken cancelToken = CancelToken();
 
@@ -37,14 +37,11 @@ class PinPinListSource extends LoadingMoreBase<PinPinDataSource> {
   PinPinListSource({required this.dataType});
 
   @override
-  bool get hasMore => (_hasMore && length < 30) || forceRefresh;
+  bool get hasMore => firstInit;
 
   @override
   Future<bool> refresh([bool notifyStateChanged = false]) async {
-    _hasMore = true;
-    pageindex = 1;
-
-    //force to refresh list when you don't want clear list before request
+    firstInit = true;
 
     forceRefresh = !notifyStateChanged;
     var result = await super.refresh(notifyStateChanged);
@@ -54,22 +51,20 @@ class PinPinListSource extends LoadingMoreBase<PinPinDataSource> {
 
   @override
   Future<bool> loadData([bool isloadMoreAction = false]) async {
-    bool isSuccess = false;
     try {
       final source = await ApiClient.getPinPinDataSourceList(
           target: api, cancelToken: cancelToken);
-      if (pageindex++ == 1) {
+      if (firstInit) {
         clear();
+        firstInit = false; //init完毕
+        addAll(source);
+      } else {
+        if (hasMore) addAll(source);
       }
-      if (hasMore) addAll(source);
-
-      isSuccess = true;
-    } catch (exception, stack) {
-      isSuccess = false;
-      log(exception.toString());
-      log(stack.toString());
+      return true;
+    } catch (e) {
+      return false;
     }
-    return isSuccess;
   }
 
   @override

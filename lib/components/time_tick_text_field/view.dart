@@ -77,7 +77,7 @@ class TimeTickTextFieldComponent extends StatelessWidget {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: hint,
-                  hintStyle: ThemeStyle.bodyText1,
+                  hintStyle: ThemeStyle.bodyText1.copyWith(color: ThemeStyle.captionColor),
                 ),
               ),
             ),

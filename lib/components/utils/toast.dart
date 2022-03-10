@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:pinpin_1037/global/theme.dart';
 import 'package:pinpin_1037/utils/pair.dart';
 
-toast(String str, {int delay = 3}) async {
+toast(String str, {int delay = 3}) {
   if (str.isEmpty || Get.overlayContext == null) return;
 
   OverlayEntry _overlayEntry = OverlayEntry(
@@ -21,22 +21,28 @@ toast(String str, {int delay = 3}) async {
               ),
             ),
           ));
-  _Q.query.add(Pair(delay, _overlayEntry));
-  if (!_Q.running) _Q.boost();
+  ToastQueue.push(Pair(delay, _overlayEntry));
 }
 
-class _Q {
-  static List<Pair<int, OverlayEntry>> query = [];
-  static bool running = false;
+typedef ToastQueueValue = Pair<int, OverlayEntry>;
 
-  static void boost() async {
-    running = true;
-    while (query.isNotEmpty) {
-      final i = query.removeAt(0);
+class ToastQueue {
+  static final List<ToastQueueValue> _queue = [];
+  static bool _isRunning = false;
+
+  static void push(ToastQueueValue value) {
+    _queue.add(value);
+    if (!_isRunning) _boost();
+  }
+
+  static void _boost() async {
+    _isRunning = true;
+    while (_queue.isNotEmpty) {
+      final i = _queue.removeAt(0);
       Overlay.of(Get.overlayContext!)!.insert(i.second);
       await Future.delayed(Duration(seconds: i.first));
       i.second.remove();
     }
-    running = false;
+    _isRunning = false;
   }
 }
